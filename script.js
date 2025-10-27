@@ -26,7 +26,7 @@ const PHYSICS = {
 };
 
 const SPEED = {
-  world: 260, // pixels per second
+  world: 260,
   spawnInterval: 1800, // milliseconds
 };
 
