@@ -19,7 +19,7 @@ const WORLD = {
 };
 
 const PHYSICS = {
-  gravity: 1400, // pixels per second²
+  gravity: 1400,
   flapImpulse: -420,
   diveImpulse: 520,
   maxVelocity: 720,
