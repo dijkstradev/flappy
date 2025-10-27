@@ -20,10 +20,11 @@ body {
   color: var(--primary);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   min-height: 100vh;
-  gap: 24px;
-  padding: 64px 12px 32px;
+  gap: 20px;
+  padding: 32px 12px;
 }
 
 .game-shell {
@@ -87,18 +88,21 @@ body {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(17, 17, 17, 0.8);
+  padding: 32px 16px;
+  background: rgba(17, 17, 17, 0.85);
+  z-index: 1000;
   transition: opacity 150ms ease;
 }
 
 .overlay--hidden {
   pointer-events: none;
   opacity: 0;
+  visibility: hidden;
 }
 
 .overlay-card {
@@ -159,6 +163,7 @@ body {
   color: var(--accent);
   text-align: center;
   letter-spacing: 1px;
+  margin-top: 24px;
 }
 
 .credits a {
