@@ -8,6 +8,7 @@ const restartBtn = document.getElementById("restart-btn");
 const shareBtn = document.getElementById("share-btn");
 const shareCanvas = document.getElementById("share-canvas");
 const shareCtx = shareCanvas.getContext("2d");
+const mobileViewportQuery = window.matchMedia("(max-width: 600px)");
 
 const STORAGE_KEY = "flappy-bird-high-score";
 const LEGACY_KEY = "flappy-dino-high-score";
@@ -17,6 +18,8 @@ const WORLD = {
   height: canvas.height,
   groundY: canvas.height - 32,
 };
+
+configureCanvasDimensions();
 
 const PHYSICS = {
   gravity: 1400,
@@ -57,6 +60,21 @@ const BIRD_COLORS = {
 };
 
 const WING_ANGLES = [-0.8, 0.45];
+
+function configureCanvasDimensions() {
+  const desiredWidth = 840;
+  const desiredHeight = mobileViewportQuery.matches ? 540 : 240;
+  if (canvas.width !== desiredWidth) {
+    canvas.width = desiredWidth;
+  }
+  if (canvas.height !== desiredHeight) {
+    canvas.height = desiredHeight;
+  }
+
+  WORLD.width = canvas.width;
+  WORLD.height = canvas.height;
+  WORLD.groundY = canvas.height - 32;
+}
 
 let obstacles = [];
 let score = 0;
@@ -344,10 +362,10 @@ function drawIdlePrompt() {
 
   ctx.fillStyle = "#9d9d9d";
   ctx.font = "16px 'Press Start 2P', monospace";
-  ctx.fillText("Press ↑ to start", WORLD.width / 2, WORLD.height / 2);
+  ctx.fillText("Press ↑ or tap to start", WORLD.width / 2, WORLD.height / 2);
 
   ctx.font = "10px 'Press Start 2P', monospace";
-  ctx.fillText("Hold ↑ to soar • Press ↓ to dive", WORLD.width / 2, WORLD.height / 2 + 28);
+  ctx.fillText("Tap to flap • Hold ↑ to soar • Press ↓ to dive", WORLD.width / 2, WORLD.height / 2 + 28);
 }
 
 function draw() {
@@ -403,6 +421,12 @@ function handleKeydown(event) {
   }
 }
 
+function handlePointerFlap(event) {
+  event.preventDefault();
+  if (state.over) return;
+  applyFlapImpulse("up");
+}
+
 function renderShareCard() {
   const width = shareCanvas.width;
   const height = shareCanvas.height;
@@ -455,7 +479,22 @@ function init() {
 }
 
 document.addEventListener("keydown", handleKeydown, { passive: false });
+canvas.addEventListener("pointerdown", handlePointerFlap, { passive: false });
 restartBtn.addEventListener("click", resetGame);
 shareBtn.addEventListener("click", downloadShareImage);
+
+const handleViewportChange = () => {
+  const previousHeight = WORLD.height;
+  configureCanvasDimensions();
+  if (WORLD.height !== previousHeight) {
+    resetGame();
+  }
+};
+
+if (typeof mobileViewportQuery.addEventListener === "function") {
+  mobileViewportQuery.addEventListener("change", handleViewportChange);
+} else if (typeof mobileViewportQuery.addListener === "function") {
+  mobileViewportQuery.addListener(handleViewportChange);
+}
 
 init();
