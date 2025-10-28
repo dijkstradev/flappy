@@ -40,6 +40,27 @@ body {
   padding: 16px 24px;
   font-size: 0.9rem;
   color: var(--accent);
+  gap: 16px;
+}
+
+.home-link {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid #3d3d3d;
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+.home-link:hover,
+.home-link:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  color: #181818;
+  background: var(--primary);
 }
 
 .scoreboard {
